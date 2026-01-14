@@ -5,31 +5,83 @@
   <title>New Order – Koperasi Sumber Mulia Barokah</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- FONT -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- ICONS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
   <!-- BOOTSTRAP (FOR FORM ELEMENTS ONLY) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- ICONS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- CHART JS -->
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
+    /* ======================================================
+       ROOT & RESET
+    ====================================================== */
     :root {
-      --bg-dark: #0e1a16;
-      --bg-card: rgba(30, 70, 55, 0.55);
-      --green-soft: #6ee7b7;
+      /* ===============================
+        BACKGROUND
+      =============================== */
+      --bg-dark: #122140; /* deep blue-black instead of green-black */
+      --bg-card: rgba(255, 255, 255, 0.12);
+      --bg-card-solid: rgba(255, 255, 255, 0.18);
+
+      /* ===============================
+        PRIMARY ACCENT (GREEN → COOLER)
+      =============================== */
+      --green-main: #148799;   /* cyan-teal accent */
+      --green-soft: #78efff;   /* soft highlight */
+      --green-dark: #0ea5b7;
+
+      /* ===============================
+        TEXT
+      =============================== */
       --text-main: #ffffff;
-      --text-muted: #b5d6c8;
-      --radius: 16px;
-      --radius-sm: 10px;
-      --shadow-soft: 0 8px 30px rgba(0,0,0,0.25);
-      --glass: blur(18px);
+      --text-muted: rgba(255, 255, 255, 0.65);
+
+      /* ===============================
+        STATUS
+      =============================== */
+      --warning: #facc15;
+      --danger: #f87171;
+
+      /* ===============================
+        SHAPE
+      =============================== */
+      --radius: 20px;
+      --radius-sm: 14px;
+
+      /* ===============================
+        GLASS / SHADOW
+      =============================== */
+      --shadow-soft: 
+        0 8px 32px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+
+      --glass: blur(24px) saturate(160%);
     }
 
+
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+    }
+
+
+    body {
+      background: radial-gradient(circle at top, #163a2e, var(--bg-dark));
+      color: var(--text-main);
+      min-height: 100vh;
     }
 
     a {
@@ -37,11 +89,48 @@
       color: inherit;
     }
 
-    body {
-      margin: 0;
-      background: radial-gradient(circle at top, #163a2e, var(--bg-dark));
-      color: var(--text-main);
-      min-height: 100vh;
+    /* ======================================================
+       LAYOUT
+    ====================================================== */
+
+    .app {
+      display: block;
+    }
+
+    /* ======================================================
+      SIDEBAR TYPOGRAPHY NORMALIZATION
+      Fixes Bootstrap line-height bleed
+    ====================================================== */
+
+    .sidebar {
+      line-height: 1.2;
+      font-size: 16px;
+    }
+
+    .sidebar * {
+      line-height: inherit;
+    }
+
+    /* Tighten nav items explicitly */
+    .sidebar .nav-item {
+      line-height: 1.2;
+    }
+
+    /* ======================================================
+       SIDEBAR
+    ====================================================== */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 260px;
+      background: linear-gradient(180deg, #265e4b, #08271e);
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      box-shadow: var(--shadow-soft);
     }
 
     .main {
@@ -102,41 +191,6 @@
 
     .btn-primary:hover {
       opacity: 0.9;
-    }
-    /* ======================================================
-      SIDEBAR TYPOGRAPHY NORMALIZATION
-      Fixes Bootstrap line-height bleed
-    ====================================================== */
-
-    .sidebar {
-      line-height: 1.2; /* match dashboard default */
-      font-size: 16px;
-    }
-
-    .sidebar * {
-      line-height: inherit;
-    }
-
-    /* Tighten nav items explicitly */
-    .sidebar .nav-item {
-      line-height: 1.2;
-    }
-
-    /* ======================================================
-       SIDEBAR
-    ====================================================== */
-    .sidebar {
-      position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 260px;
-      background: linear-gradient(180deg, #0f241d, #081310);
-      padding: 24px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-      box-shadow: var(--shadow-soft);
     }
 
     .logo {
@@ -298,8 +352,8 @@
     }
 
 .estimation {
-    background: linear-gradient(180deg, #0f172a, #020617);
-    border: 1px solid #1e293b;
+    background: linear-gradient(180deg, #1f5f34, #103b3f);
+    border: 1px solid #2d6a3f;
 }
 
 .estimation-header {
@@ -361,6 +415,17 @@
     background: #1e293b;
     margin: 12px 0;
 }
+
+.custom-select-dark option {
+  background-color: #1e1e1e;   /* dark */
+  color: #f1f1f1;
+}
+
+.custom-select-dark option:checked {
+  background-color: #0d6efd;   /* Bootstrap primary */
+  color: #fff;
+}
+
 
   </style>
 </head>
@@ -428,7 +493,7 @@
     <div id="nonCustomForm">
       <div class="mb-3">
         <label class="form-label">Produk</label>
-        <select class="form-select">
+        <select class="form-select custom-select-dark">
           <option selected disabled>Pilih produk</option>
           <option>Seragam Pramuka SMA</option>
           <option>Jaket Outdoor</option>
@@ -447,7 +512,11 @@
 
       <div class="mb-3">
         <label class="form-label">Nama Produk Custom</label>
-        <input type="text" class="form-control" placeholder="Seragam">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Contoh: Seragam Pramuka SMA Custom"
+        >
       </div>
 
       <hr>
@@ -456,17 +525,30 @@
 
       <div class="mb-3">
         <label class="form-label">Nama Material</label>
-        <input type="text" class="form-control">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Contoh: Kain Oxford"
+        >
       </div>
 
       <div class="mb-3">
         <label class="form-label">Harga Material / pcs</label>
-        <input type="number" class="form-control">
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Contoh: 25000"
+        >
       </div>
 
       <div class="mb-3">
         <label class="form-label">Qty Digunakan / pcs</label>
-        <input type="number" class="form-control" step="0.01">
+        <input
+          type="number"
+          class="form-control"
+          step="0.01"
+          placeholder="Contoh: 1.2"
+        >
       </div>
 
       <hr>
@@ -475,16 +557,23 @@
 
       <div class="mb-3">
         <label class="form-label">Harga Jasa / pcs</label>
-        <input type="number" class="form-control">
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Contoh: 15000"
+        >
       </div>
 
       <div class="mb-3">
         <label class="form-label">Jumlah Produk (pcs)</label>
-        <input type="number" class="form-control">
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Contoh: 60"
+        >
       </div>
 
     </div>
-  </div>
 
   <!-- PROCESS BUTTON -->
   <div class="d-grid mb-4">
@@ -552,17 +641,17 @@
 
         <div class="muted">✨ Direkomendasikan</div>
 
-        <div class="work-item selectable" onclick="addTailor('Siti Rahmawati')">
+        <div class="work-item selectable" onmousedown="addTailor('Siti Rahmawati')">
           <strong>Siti Rahmawati</strong><br>
           <span class="muted">Seragam • Surabaya • Available • ⭐4.8</span>
         </div>
 
-        <div class="work-item selectable" onclick="addTailor('Budi Santoso')">
+        <div class="work-item selectable" onmousedown="addTailor('Budi Santoso')">
           <strong>Budi Santoso</strong><br>
           <span class="muted">Seragam • Gresik • ⭐4.5</span>
         </div>
 
-        <div class="work-item selectable" onclick="addTailor('Ani Wulandari')">
+        <div class="work-item selectable" onmousedown="addTailor('Ani Wulandari')">
           <strong>Ani Wulandari</strong><br>
           <span class="muted">Seragam • Surabaya • ⭐4.2</span>
         </div>

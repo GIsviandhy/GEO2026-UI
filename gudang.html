@@ -7,45 +7,73 @@
 
   <!-- FONT -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <!-- ICONS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-  <!-- Chart JS -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- CHART JS -->
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     /* ======================================================
        ROOT & RESET
     ====================================================== */
     :root {
-      --bg-dark: #0e1a16;
-      --bg-card: rgba(30, 70, 55, 0.55);
-      --bg-card-solid: #1a3f33;
+      /* ===============================
+        BACKGROUND
+      =============================== */
+      --bg-dark: #122140; /* deep blue-black instead of green-black */
+      --bg-card: rgba(255, 255, 255, 0.12);
+      --bg-card-solid: rgba(255, 255, 255, 0.18);
 
-      --green-main: #2ecc71;
-      --green-soft: #6ee7b7;
-      --green-dark: #1f8f5f;
+      /* ===============================
+        PRIMARY ACCENT (GREEN → COOLER)
+      =============================== */
+      --green-main: #148799;   /* cyan-teal accent */
+      --green-soft: #78efff;   /* soft highlight */
+      --green-dark: #0ea5b7;
 
+      /* ===============================
+        TEXT
+      =============================== */
       --text-main: #ffffff;
-      --text-muted: #b5d6c8;
+      --text-muted: rgba(255, 255, 255, 0.65);
 
-      --warning: #fbbf24;
-      --danger: #ef4444;
+      /* ===============================
+        STATUS
+      =============================== */
+      --warning: #facc15;
+      --danger: #f87171;
 
-      --radius: 16px;
-      --radius-sm: 10px;
+      /* ===============================
+        SHAPE
+      =============================== */
+      --radius: 20px;
+      --radius-sm: 14px;
 
-      --shadow-soft: 0 8px 30px rgba(0,0,0,0.25);
-      --glass: blur(18px);
+      /* ===============================
+        GLASS / SHADOW
+      =============================== */
+      --shadow-soft: 
+        0 8px 32px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+
+      --glass: blur(24px) saturate(160%);
     }
+
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     }
+
+    h1, h2, h3 {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+    }
+
 
     body {
       background: radial-gradient(circle at top, #163a2e, var(--bg-dark));
@@ -62,8 +90,6 @@
        LAYOUT
     ====================================================== */
 
-
-
     .app {
       display: block;
     }
@@ -77,13 +103,14 @@
       top: 0;
       bottom: 0;
       width: 260px;
-      background: linear-gradient(180deg, #0f241d, #081310);
+      background: linear-gradient(180deg, #265e4b, #08271e);
       padding: 24px 18px;
       display: flex;
       flex-direction: column;
       gap: 28px;
       box-shadow: var(--shadow-soft);
     }
+
 
     .logo {
       font-size: 20px;
