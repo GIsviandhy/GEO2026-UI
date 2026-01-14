@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Koperasi Sumber Mulia Barokah Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- ICONS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Chart JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* ======================================================
+       ROOT & RESET
+    ====================================================== */
+    :root {
+      --bg-dark: #0e1a16;
+      --bg-card: rgba(30, 70, 55, 0.55);
+      --bg-card-solid: #1a3f33;
+
+      --green-main: #2ecc71;
+      --green-soft: #6ee7b7;
+      --green-dark: #1f8f5f;
+
+      --text-main: #ffffff;
+      --text-muted: #b5d6c8;
+
+      --warning: #fbbf24;
+      --danger: #ef4444;
+
+      --radius: 16px;
+      --radius-sm: 10px;
+
+      --shadow-soft: 0 8px 30px rgba(0,0,0,0.25);
+      --glass: blur(18px);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #163a2e, var(--bg-dark));
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ======================================================
+       LAYOUT
+    ====================================================== */
+
+
+
+    .app {
+      display: block;
+    }
+
+    /* ======================================================
+       SIDEBAR
+    ====================================================== */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 260px;
+      background: linear-gradient(180deg, #0f241d, #081310);
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--green-soft);
+      letter-spacing: 0.5px;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .nav-item i {
+      width: 18px;
+      text-align: center;
+    }
+
+    .nav-item:hover {
+      background: rgba(46, 204, 113, 0.15);
+      color: var(--text-main);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, rgba(46,204,113,0.35), rgba(46,204,113,0.15));
+      color: #fff;
+      box-shadow: inset 0 0 0 1px rgba(46,204,113,0.4);
+    }
+
+    .submenu {
+      margin-left: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .submenu .nav-item {
+      padding: 10px 14px;
+      font-size: 14px;
+    }
+
+    /* PROFILE */
+    .sidebar-profile {
+      margin-top: auto;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #34d399, #059669);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-info span {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .logout {
+      color: var(--danger);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* ======================================================
+       MAIN CONTENT
+    ====================================================== */
+    .main {
+      margin-left: 260px;
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    /* HEADER */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .title h1 {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .title p {
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .search-box {
+      background: rgba(255,255,255,0.08);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search-box input {
+      background: none;
+      border: none;
+      outline: none;
+      color: #fff;
+      width: 160px;
+    }
+
+    .filter {
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.08);
+      cursor: pointer;
+    }
+
+    /* ======================================================
+       CARDS & GRID
+    ====================================================== */
+    .grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .grid-5 {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    }
+
+    .card {
+      background: linear-gradient(
+        135deg,
+        rgba(46,204,113,0.25),
+        rgba(30,70,55,0.55)
+      );
+      backdrop-filter: var(--glass);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* KPI */
+    .kpi {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .kpi i {
+      font-size: 26px;
+      color: var(--green-soft);
+    }
+
+    .kpi h2 {
+      font-size: 26px;
+      margin-top: 8px;
+    }
+
+    .trend.up {
+      color: var(--green-soft);
+      font-size: 13px;
+    }
+
+    .trend.down {
+      color: var(--danger);
+      font-size: 13px;
+    }
+
+    /* ======================================================
+       PROGRESS BAR
+    ====================================================== */
+    .progress {
+      background: rgba(255,255,255,0.1);
+      height: 8px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #34d399, #22c55e);
+      width: 70%;
+    }
+
+    /* ======================================================
+       TABLE
+    ====================================================== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    tr:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    .badge.available {
+      background: rgba(46,204,113,0.2);
+      color: #6ee7b7;
+    }
+
+    .badge.busy {
+      background: rgba(239,68,68,0.2);
+      color: #fecaca;
+    }
+
+    /* ======================================================
+       BUTTON
+    ====================================================== */
+    .btn {
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #34d399, #16a34a);
+      color: #042f1a;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(34,197,94,0.4);
+    }
+
+    /* ======================================================
+       RESPONSIVE
+    ====================================================== */
+    @media (max-width: 900px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+      .main {
+        margin-left: 0;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">Koperasi Sumber Mulia Barokah</div>
+
+    <nav class="nav">
+      <a href="dashboard.html" class="nav-item">
+        <i class="fa-solid fa-chart-pie"></i>Dashboard
+      </a>
+      <a href="order.html" class="nav-item">
+        <i class="fa-solid fa-clipboard-list"></i>Orders
+      </a>
+      <a href="gudang.html" class="nav-item active">
+        <i class="fa-solid fa-warehouse"></i>Gudang
+      </a>
+      <a href="pekerja.html" class="nav-item">
+        <i class="fa-solid fa-users"></i>Manajemen Pekerja
+      </a>
+    </nav>
+
+    <div class="sidebar-profile">
+      <div class="avatar">A</div>
+      <div class="profile-info">
+        <strong>Admin</strong><br>
+        <span>Super User</span>
+      </div>
+      <div class="logout"><i class="fa-solid fa-right-from-bracket"></i></div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+      <section id="gudang">
+
+      <div class="page-header">
+          <div class="title">
+          <h1>Gudang</h1>
+          <p>Manajemen Inventori, Pesanan, dan Biaya Produksi</p>
+          </div>
+      </div>
+
+      <!-- KPI Gudang -->
+      <div class="grid grid-3">
+          <div class="card kpi">
+          <div>
+              <span>Total Stok</span>
+              <h2>12.450</h2>
+          </div>
+          <i class="fa-solid fa-boxes-stacked"></i>
+          </div>
+
+          <div class="card kpi">
+          <div>
+              <span>Order Aktif</span>
+              <h2>128</h2>
+          </div>
+          <i class="fa-solid fa-truck-fast"></i>
+          </div>
+
+          <div class="card kpi">
+          <div>
+              <span>Total Profit</span>
+              <h2>Rp 1.689.779.860,00</h2>
+          </div>
+          <i class="fa-solid fa-calculator"></i>
+          </div>
+      </div>
+
+      <!-- STOCK TABLE -->
+      <div class="card" style="margin-top:28px;">
+          <h3>Stok Gudang</h3>
+
+          <table>
+          <thead>
+              <tr>
+              <th>Produk</th>
+              <th>Kategori</th>
+              <th>Jumlah</th>
+              <th>Status</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+              <td>Seragam Pramuka SMA Laki-laki</td>
+              <td>Seragam</td>
+              <td>2.300</td>
+              <td><span class="badge available">Aman</span></td>
+              </tr>
+              <tr>
+              <td>Jaket Outdoor</td>
+              <td>Pakaian</td>
+              <td>480</td>
+              <td><span class="badge busy">Menipis</span></td>
+              </tr>
+              <tr>
+              <td>Kaos Gereja</td>
+              <td>Kaos</td>
+              <td>1.200</td>
+              <td><span class="badge available">Aman</span></td>
+              </tr>
+              <tr>
+                  <td>Seragam Pramuka SMA Perempuan</td>
+                  <td>Seragam</td>
+                  <td>1.850</td>
+                  <td><span class="badge available">Aman</span></td>
+              </tr>
+              <tr>
+                  <td>Seragam OSIS SMA</td>
+                  <td>Seragam</td>
+                  <td>620</td>
+                  <td><span class="badge busy">Menipis</span></td>
+              </tr>
+              <tr>
+                  <td>Kemeja Kantor Lengan Panjang</td>
+                  <td>Pakaian</td>
+                  <td>980</td>
+                  <td><span class="badge available">Aman</span></td>
+              </tr>
+              <tr>
+                  <td>Kemeja Kantor Lengan Pendek</td>
+                  <td>Pakaian</td>
+                  <td>410</td>
+                  <td><span class="badge busy">Menipis</span></td>
+              </tr>
+              <tr>
+                  <td>Jaket Varsity</td>
+                  <td>Pakaian</td>
+                  <td>320</td>
+                  <td><span class="badge busy">Menipis</span></td>
+              </tr>
+              <tr>
+                  <td>Jas Formal Hitam</td>
+                  <td>Pakaian</td>
+                  <td>150</td>
+                  <td><span class="badge danger">Habis</span></td>
+              </tr>
+              <tr>
+                  <td>Blazer Wanita</td>
+                  <td>Pakaian</td>
+                  <td>275</td>
+                  <td><span class="badge busy">Menipis</span></td>
+              </tr>
+              <tr>
+                  <td>Kaos Event Kampus</td>
+                  <td>Kaos</td>
+                  <td>2.050</td>
+                  <td><span class="badge available">Aman</span></td>
+              </tr>
+              <tr>
+                  <td>Kaos Polo Custom</td>
+                  <td>Kaos</td>
+                  <td>690</td>
+                  <td><span class="badge busy">Menipis</span></td>
+              </tr>
+              <tr>
+                  <td>Kaos Olahraga</td>
+                  <td>Kaos</td>
+                  <td>1.340</td>
+                  <td><span class="badge available">Aman</span></td>
+              </tr>
+              <tr>
+                  <td>Celana Chino Pria</td>
+                  <td>Pakaian</td>
+                  <td>540</td>
+                  <td><span class="badge available">Aman</span></td>
+              </tr>
+              <tr>
+                  <td>Rok Kantor Wanita</td>
+                  <td>Pakaian</td>
+                  <td>230</td>
+                  <td><span class="badge busy">Menipis</span></td>
+              </tr>
+              <tr>
+                  <td>Seragam Hotel</td>
+                  <td>Seragam</td>
+                  <td>95</td>
+                  <td><span class="badge danger">Habis</span></td>
+              </tr>
+              <tr>
+                  <td>Seragam Rumah Sakit</td>
+                  <td>Seragam</td>
+                  <td>410</td>
+                  <td><span class="badge busy">Menipis</span></td>
+              </tr>
+              <tr>
+                  <td>Dress Produksi Massal</td>
+                  <td>Pakaian</td>
+                  <td>780</td>
+                  <td><span class="badge available">Aman</span></td>
+              </tr>
+
+          </tbody>
+          </table>
+      </div>
+
+      <!-- ORDER TRACKER -->
+      <div class="grid grid-2" style="margin-top:28px;">
+          <div class="card">
+          <h3>Live Order Tracker</h3>
+
+          <table>
+              <thead>
+              <tr>
+                  <th>Order</th>
+                  <th>Produk</th>
+                  <th>Status</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                  <td>#ORD-1293</td>
+                  <td>Seragam Pramuka</td>
+                  <td><span class="badge available">Produksi</span></td>
+              </tr>
+              <tr>
+                  <td>#ORD-1299</td>
+                  <td>Jaket Outdoor</td>
+                  <td><span class="badge busy">Pending</span></td>
+              </tr>
+              <tr>
+                  <td>#ORD-1301</td>
+                  <td>Kemeja Kantor</td>
+                  <td><span class="badge available">Produksi</span></td>
+              </tr>
+              <tr>
+                  <td>#ORD-1302</td>
+                  <td>Seragam Sekolah SMA</td>
+                  <td><span class="badge busy">Pending</span></td>
+              </tr>
+              <tr>
+                  <td>#ORD-1303</td>
+                  <td>Kaos Event Komunitas</td>
+                  <td><span class="badge available">Produksi</span></td>
+              </tr>
+              <tr>
+                  <td>#ORD-1304</td>
+                  <td>Jas Formal</td>
+                  <td><span class="badge done">Selesai</span></td>
+              </tr>
+              <tr>
+                  <td>#ORD-1305</td>
+                  <td>Kebaya Modern</td>
+                  <td><span class="badge available">Produksi</span></td>
+              </tr>
+              <tr>
+                  <td>#ORD-1306</td>
+                  <td>Seragam Rumah Sakit</td>
+                  <td><span class="badge busy">Pending</span></td>
+              </tr>
+              <tr>
+                  <td>#ORD-1307</td>
+                  <td>Jaket Varsity</td>
+                  <td><span class="badge available">Produksi</span></td>
+              </tr>
+              <tr>
+                  <td>#ORD-1308</td>
+                  <td>Celana Chino</td>
+                  <td><span class="badge done">Selesai</span></td>
+              </tr>
+              <tr>
+                  <td>#ORD-1309</td>
+                  <td>Blazer Wanita</td>
+                  <td><span class="badge available">Produksi</span></td>
+              </tr>
+              </tbody>
+          </table>
+          </div>
+
+          <!-- Monthly Demand -->
+          <div class="card">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+              <i class="fa-solid fa-chart-line" style="color: var(--green-soft); font-size:18px;"></i>
+              <h3 style="margin:0;">Monthly Demand Trend</h3>
+            </div>
+
+            <div style="
+              background: rgba(0,0,0,0.25);
+              border-radius: 12px;
+              padding: 14px;
+            ">
+            <canvas id="monthlyDemandChart" height="450"></canvas>
+            </div>
+          </div>
+
+      </div>
+
+      </section>
+  </main>
+
+</div>
+
+<script>
+  const ctx = document.getElementById('monthlyDemandChart');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [
+        'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+        'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+      ],
+      datasets: [{
+        label: 'Jumlah Pesanan (pcs)',
+        data: [
+          1200, 950, 1800, 1400, 3200, 215000,
+          68000, 8200, 124000, 5400, 6300, 5100
+        ],
+        borderColor: '#6ee7b7',
+        backgroundColor: 'rgba(110, 231, 183, 0.15)',
+        tension: 0.35,
+        fill: true,
+        pointRadius: 4,
+        pointBackgroundColor: '#6ee7b7'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#b5d6c8',
+            font: { size: 13 }
+          }
+        },
+        tooltip: {
+          backgroundColor: '#0e1a16',
+          titleColor: '#ffffff',
+          bodyColor: '#b5d6c8',
+          borderColor: '#6ee7b7',
+          borderWidth: 1
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: '#b5d6c8'
+          },
+          grid: {
+            display: false
+          }
+        },
+        y: {
+          ticks: {
+            color: '#b5d6c8'
+          },
+          grid: {
+            color: 'rgba(255,255,255,0.05)'
+          }
+        }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

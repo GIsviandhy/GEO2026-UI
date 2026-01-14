@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Detail Penjahit – Koperasi Sumber Mulia Barokah</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- ICONS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    /* ======================================================
+       ROOT & RESET (SAMA DENGAN PAGE LAIN)
+    ====================================================== */
+    :root {
+      --bg-dark: #0e1a16;
+      --bg-card: rgba(30, 70, 55, 0.55);
+      --green-main: #2ecc71;
+      --green-soft: #6ee7b7;
+      --text-main: #ffffff;
+      --text-muted: #b5d6c8;
+      --danger: #ef4444;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow-soft: 0 8px 30px rgba(0,0,0,0.25);
+      --glass: blur(18px);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #163a2e, var(--bg-dark));
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ======================================================
+       LAYOUT
+    ====================================================== */
+    .app {
+      display: block;
+    }
+
+    /* ======================================================
+       SIDEBAR
+    ====================================================== */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 260px;
+      background: linear-gradient(180deg, #0f241d, #081310);
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--green-soft);
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      transition: 0.25s ease;
+    }
+
+    .nav-item:hover {
+      background: rgba(46,204,113,0.15);
+      color: var(--text-main);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, rgba(46,204,113,0.35), rgba(46,204,113,0.15));
+      color: #fff;
+    }
+
+    .sidebar-profile {
+      margin-top: auto;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #34d399, #059669);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    /* ======================================================
+       MAIN
+    ====================================================== */
+    .main {
+      margin-left: 260px;
+      padding: 32px;
+    }
+
+    .page-header {
+      margin-bottom: 28px;
+    }
+
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .page-header p {
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ======================================================
+       CARD & GRID
+    ====================================================== */
+    .grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    }
+
+    .card {
+      background: linear-gradient(
+        135deg,
+        rgba(46,204,113,0.25),
+        rgba(30,70,55,0.55)
+      );
+      backdrop-filter: var(--glass);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .muted {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ======================================================
+       KPI
+    ====================================================== */
+    .kpi {
+      text-align: center;
+    }
+
+    .kpi h2 {
+      font-size: 26px;
+      margin-top: 8px;
+    }
+
+    /* ======================================================
+       TABLE
+    ====================================================== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    tr:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* ======================================================
+       BADGE & BUTTON
+    ====================================================== */
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    .badge.available {
+      background: rgba(46,204,113,0.2);
+      color: #6ee7b7;
+    }
+
+    .badge.busy {
+      background: rgba(239,68,68,0.2);
+      color: #fecaca;
+    }
+
+    .btn {
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #34d399, #16a34a);
+      color: #042f1a;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ===== RIWAYAT KERJA UNIFIED ===== */
+
+    .work-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 18px;
+    display: grid;
+    gap: 14px;
+    }
+
+    .work-item {
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.18);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    }
+
+    .work-item.pending {
+    border-left: 4px solid #34d399;
+    }
+
+    .work-item.done {
+    border-left: 4px solid rgba(255,255,255,0.15);
+    }
+
+    .work-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 16px;
+    }
+
+    .amount {
+    font-weight: 600;
+    white-space: nowrap;
+    }
+
+    .badge.pending {
+    background: rgba(251,191,36,0.2);
+    color: #fde68a;
+    }
+
+    .badge.done {
+    background: rgba(46,204,113,0.2);
+    color: #6ee7b7;
+    }
+
+    .btn.small {
+    padding: 8px 12px;
+    font-size: 13px;
+    }
+    
+    .search-box {
+      background: rgba(255,255,255,0.08);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search-box input {
+      background: none;
+      border: none;
+      outline: none;
+      color: #fff;
+      width: 160px;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">Koperasi Sumber Mulia Barokah</div>
+
+    <nav class="nav">
+      <a href="dashboard.html" class="nav-item">
+        <i class="fa-solid fa-chart-pie"></i>Dashboard
+      </a>
+      <a href="order.html" class="nav-item">
+        <i class="fa-solid fa-clipboard-list"></i>Orders
+      </a>
+      <a href="gudang.html" class="nav-item active">
+        <i class="fa-solid fa-warehouse"></i>Gudang
+      </a>
+      <a href="pekerja.html" class="nav-item">
+        <i class="fa-solid fa-users"></i>Manajemen Pekerja
+      </a>
+    </nav>
+
+    <div class="sidebar-profile">
+      <div class="avatar">A</div>
+      <div class="profile-info">
+        <strong>Admin</strong><br>
+        <span>Super User</span>
+      </div>
+      <div class="logout"><i class="fa-solid fa-right-from-bracket"></i></div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HEADER -->
+    <div class="page-header">
+      <h1>Siti Rahmawati</h1>
+      <p>Detail Penjahit & Aktivitas Produksi</p>
+    </div>
+
+    <!-- KPI RINGKAS -->
+    <div class="grid grid-3">
+      <div class="card kpi">
+        <span>Status</span>
+        <h2><span class="badge available">Available</span></h2>
+      </div>
+
+      <div class="card kpi">
+        <span>Proyek Aktif</span>
+        <h2>1</h2>
+      </div>
+
+      <div class="card kpi">
+        <span>Total Proyek Selesai</span>
+        <h2>7</h2>
+      </div>
+    </div>
+
+
+    <!-- =========================
+        RIWAYAT KERJA (UNIFIED)
+    ========================= -->
+    <div class="card" style="margin-top:28px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:16px;">
+        <h3>Riwayat Kerja</h3>
+
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Cari proyek..." />
+        </div>
+    </div>
+
+
+    <ul class="work-list">
+
+    <!-- PROYEK AKTIF / PENDING -->
+    <li class="work-item pending">
+        <div class="work-main">
+        <div>
+            <strong>Seragam Pramuka SMA</strong>
+            <p class="muted">
+            Status: <span class="badge pending">Pending</span><br>
+            Deadline: 7 Hari lagi<br>
+            Lokasi Produksi: Surabaya<br>
+            Jumlah: <strong>40 pcs</strong>
+            </p>
+        </div>
+
+        <button class="btn small">
+            <i class="fa-solid fa-bell"></i>
+            Kirim Reminder
+        </button>
+        </div>
+    </li>
+
+    <!-- SELESAI 1 -->
+    <li class="work-item done">
+        <div>
+        <strong>Seragam Pramuka SMP</strong>
+        <p class="muted">
+            Tanggal: 02 Sep 2025<br>
+            Jumlah: 150 pcs<br>
+            Status: <span class="badge done">Selesai</span>
+        </p>
+        </div>
+        <span class="amount">Rp 3.200.000</span>
+    </li>
+
+    <!-- SELESAI 2 -->
+    <li class="work-item done">
+        <div>
+        <strong>Kaos Gereja</strong>
+        <p class="muted">
+            Tanggal: 18 Agu 2025<br>
+            Jumlah: 200 pcs<br>
+            Status: <span class="badge done">Selesai</span>
+        </p>
+        </div>
+        <span class="amount">Rp 2.100.000</span>
+    </li>
+
+    <!-- SELESAI 3 -->
+    <li class="work-item done">
+        <div>
+        <strong>Jaket Outdoor</strong>
+        <p class="muted">
+            Tanggal: 05 Agu 2025<br>
+            Jumlah: 60 pcs<br>
+            Status: <span class="badge done">Selesai</span>
+        </p>
+        </div>
+        <span class="amount">Rp 4.500.000</span>
+    </li>
+
+    <!-- SELESAI 4 -->
+    <li class="work-item done">
+        <div>
+        <strong>Seragam Kantor Koperasi</strong>
+        <p class="muted">
+            Tanggal: 21 Jul 2025<br>
+            Jumlah: 45 pcs<br>
+            Status: <span class="badge done">Selesai</span>
+        </p>
+        </div>
+        <span class="amount">Rp 1.800.000</span>
+    </li>
+
+    <!-- SELESAI 5 -->
+    <li class="work-item done">
+        <div>
+        <strong>Kaos Event HUT RI</strong>
+        <p class="muted">
+            Tanggal: 10 Jul 2025<br>
+            Jumlah: 300 pcs<br>
+            Status: <span class="badge done">Selesai</span>
+        </p>
+        </div>
+        <span class="amount">Rp 3.900.000</span>
+    </li>
+
+    <!-- SELESAI 6 -->
+    <li class="work-item done">
+        <div>
+        <strong>Kemeja Linen</strong>
+        <p class="muted">
+            Tanggal: 28 Jun 2025<br>
+            Jumlah: 40 pcs<br>
+            Status: <span class="badge done">Selesai</span>
+        </p>
+        </div>
+        <span class="amount">Rp 2.400.000</span>
+    </li>
+
+    <!-- SELESAI 7 -->
+    <li class="work-item done">
+        <div>
+        <strong>Rompi Panitia Acara</strong>
+        <p class="muted">
+            Tanggal: 15 Jun 2025<br>
+            Jumlah: 35 pcs<br>
+            Status: <span class="badge done">Selesai</span>
+        </p>
+        </div>
+        <span class="amount">Rp 1.600.000</span>
+    </li>
+
+    </ul>
+    </div>
+
+
+  </main>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Koperasi Sumber Mulia Barokah Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- ICONS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    /* ======================================================
+       ROOT & RESET
+    ====================================================== */
+    :root {
+      --bg-dark: #0e1a16;
+      --bg-card: rgba(30, 70, 55, 0.55);
+      --bg-card-solid: #1a3f33;
+
+      --green-main: #2ecc71;
+      --green-soft: #6ee7b7;
+      --green-dark: #1f8f5f;
+
+      --text-main: #ffffff;
+      --text-muted: #b5d6c8;
+
+      --warning: #fbbf24;
+      --danger: #ef4444;
+
+      --radius: 16px;
+      --radius-sm: 10px;
+
+      --shadow-soft: 0 8px 30px rgba(0,0,0,0.25);
+      --glass: blur(18px);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #163a2e, var(--bg-dark));
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ======================================================
+       LAYOUT
+    ====================================================== */
+
+    .app {
+      display: block;
+    }
+
+    /* ======================================================
+       SIDEBAR
+    ====================================================== */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 260px;
+      background: linear-gradient(180deg, #0f241d, #081310);
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--green-soft);
+      letter-spacing: 0.5px;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .nav-item i {
+      width: 18px;
+      text-align: center;
+    }
+
+    .nav-item:hover {
+      background: rgba(46, 204, 113, 0.15);
+      color: var(--text-main);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, rgba(46,204,113,0.35), rgba(46,204,113,0.15));
+      color: #fff;
+      box-shadow: inset 0 0 0 1px rgba(46,204,113,0.4);
+    }
+
+    .submenu {
+      margin-left: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .submenu .nav-item {
+      padding: 10px 14px;
+      font-size: 14px;
+    }
+
+    /* PROFILE */
+    .sidebar-profile {
+      margin-top: auto;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #34d399, #059669);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-info span {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .logout {
+      color: var(--danger);
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* ======================================================
+       MAIN CONTENT
+    ====================================================== */
+    .main {
+      margin-left: 260px;
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    /* HEADER */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .title h1 {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .title p {
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .search-box {
+      background: rgba(255,255,255,0.08);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search-box input {
+      background: none;
+      border: none;
+      outline: none;
+      color: #fff;
+      width: 160px;
+    }
+
+    .filter {
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.08);
+      cursor: pointer;
+    }
+
+    /* ======================================================
+       CARDS & GRID
+    ====================================================== */
+    .grid {
+      display: grid;
+      gap: 22px;
+    }
+
+    .grid-5 {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    }
+
+    .card {
+      background: linear-gradient(
+        135deg,
+        rgba(46,204,113,0.25),
+        rgba(30,70,55,0.55)
+      );
+      backdrop-filter: var(--glass);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* ===== KPI SQUARE CARDS ===== */
+    .grid-4 {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      max-width: 700px;
+    }
+
+    .kpi {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 8px;
+    padding: 18px;
+    aspect-ratio: 1 / 1; /* makes it square */
+    }
+
+    .kpi span {
+    font-size: 13px;
+    color: var(--text-muted);
+    }
+
+    .kpi h2 {
+    font-size: 28px;
+    margin: 0;
+    }
+
+    .kpi i {
+    font-size: 20px;
+    color: var(--green-soft);
+    opacity: 0.85;
+    }
+
+    /* KPI */
+    .kpi {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .kpi i {
+      font-size: 26px;
+      color: var(--green-soft);
+    }
+
+    .kpi h2 {
+      font-size: 26px;
+      margin-top: 8px;
+    }
+
+    .trend.up {
+      color: var(--green-soft);
+      font-size: 13px;
+    }
+
+    .trend.down {
+      color: var(--danger);
+      font-size: 13px;
+    }
+
+    /* ======================================================
+       PROGRESS BAR
+    ====================================================== */
+    .progress {
+      background: rgba(255,255,255,0.1);
+      height: 8px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #34d399, #22c55e);
+      width: 70%;
+    }
+
+    /* ======================================================
+       TABLE
+    ====================================================== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    tr:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    .badge.available {
+      background: rgba(46,204,113,0.2);
+      color: #6ee7b7;
+    }
+
+    .badge.busy {
+      background: rgba(239,68,68,0.2);
+      color: #fecaca;
+    }
+
+    /* ======================================================
+       BUTTON
+    ====================================================== */
+    .btn {
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #34d399, #16a34a);
+      color: #042f1a;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(34,197,94,0.4);
+    }
+
+    /* ======================================================
+       RESPONSIVE
+    ====================================================== */
+    @media (max-width: 900px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+      .main {
+        margin-left: 0;
+      }
+    }
+
+    /* ===== UNIFIED TAILOR DETAIL ===== */
+
+    details {
+    position: relative;
+    }
+
+    details summary {
+    list-style: none;
+    cursor: pointer;
+    }
+
+    details summary::-webkit-details-marker {
+    display: none;
+    }
+
+    .detail-panel {
+    margin-top: 12px;
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.2);
+    display: grid;
+    gap: 14px;
+    }
+
+    .detail-block strong {
+    display: block;
+    margin-bottom: 6px;
+    }
+
+    .muted {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+    }
+
+    .history-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+    }
+
+    .history-list li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    }
+
+    .detail-block.actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    }
+
+    /* ===== CLICKABLE TABLE ROW ===== */
+
+    .clickable-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+ 
+
+    .clickable-table td a {
+        display: block;
+        width: 100%;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .clickable-table tr:hover td {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .clickable-row {
+        cursor: pointer;
+    }
+
+    .clickable-row:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">Koperasi Sumber Mulia Barokah</div>
+
+    <nav class="nav">
+      <a href="dashboard.html" class="nav-item">
+        <i class="fa-solid fa-chart-pie"></i>Dashboard
+      </a>
+      <a href="order.html" class="nav-item">
+        <i class="fa-solid fa-clipboard-list"></i>Orders
+      </a>
+      <a href="gudang.html" class="nav-item">
+        <i class="fa-solid fa-warehouse"></i>Gudang
+      </a>
+      <a href="pekerja.html" class="nav-item active">
+        <i class="fa-solid fa-users"></i>Manajemen Pekerja
+      </a>
+    </nav>
+
+    <div class="sidebar-profile">
+      <div class="avatar">A</div>
+      <div class="profile-info">
+        <strong>Admin</strong><br>
+        <span>Super User</span>
+      </div>
+      <div class="logout"><i class="fa-solid fa-right-from-bracket"></i></div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <section id="pekerja">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <div class="title">
+        <h1>Manajemen Pekerja</h1>
+        <p>Performa Penjahit, Penugasan, dan Komunikasi</p>
+        </div>
+
+    </div>
+
+    <!-- KPI PEKERJA -->
+    <div class="grid grid-4">
+        <div class="card kpi">
+        <div>
+            <span>Total Penjahit</span>
+            <h2>48</h2>
+        </div>
+        <i class="fa-solid fa-users"></i>
+        </div>
+
+        <div class="card kpi">
+        <div>
+            <span>Penjahit Aktif</span>
+            <h2>34</h2>
+        </div>
+        <i class="fa-solid fa-user-check"></i>
+        </div>
+
+        <div class="card kpi">
+        <div>
+            <span>Proyek Berjalan</span>
+            <h2>12</h2>
+        </div>
+        <i class="fa-solid fa-briefcase"></i>
+        </div>
+
+        <div class="card kpi">
+        <div>
+            <span>Total Gaji Bulanan</span>
+            <h2>Rp 68 jt</h2>
+        </div>
+        <i class="fa-solid fa-wallet"></i>
+        </div>
+    </div>
+
+    <!-- TAILOR SUGGEST
+    <div class="card" style="margin-top:28px;">
+        <h3>Tailor Suggest</h3>
+        <p style="color:var(--text-muted); margin-bottom:16px;">
+        Rekomendasi penugasan berdasarkan kebutuhan proyek
+        </p>
+
+        <div class="grid grid-2">
+        <div>
+            <strong>Kebutuhan Proyek</strong>
+            <ul style="margin-top:10px; color:var(--text-muted); line-height:1.8;">
+            <li>Produk: Seragam Pramuka SMA</li>
+            <li>Deadline: 14 Hari</li>
+            <li>Lokasi: Surabaya</li>
+            </ul>
+        </div>
+
+        <div>
+            <strong>Penjahit Direkomendasikan</strong>
+
+            <div style="margin-top:12px;">
+            <div class="card" style="padding:14px;">
+                <strong>Siti Rahmawati</strong>
+                <p style="color:var(--text-muted); font-size:13px;">
+                Jarak 2.3 km • Skor 92 • Available
+                </p>
+                <span class="badge available">Direkomendasikan</span>
+                <div style="margin-top:10px;">
+                <button class="btn">Assign Project</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div> -->
+
+    <!-- =========================
+        MANAJEMEN PENJAHIT (UNIFIED)
+    ========================= -->
+    <div class="card" style="margin-top:28px;">
+    
+    <div class="header-actions" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h3>Manajemen Penjahit</h3>
+
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Cari penjahit..." />
+        </div>
+    </div>
+
+    <table class="clickable-table">
+        <thead>
+            <tr>
+                <th>Nama</th>
+                <th>Lokasi</th>
+                <th>Keahlian</th>
+                <th>Beban</th>
+                <th>Rating</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr class="clickable-row" data-href="penjahit-detail.html">
+                <td><a href="penjahit-detail.html">Siti Rahmawati</a></td>
+                <td><a href="penjahit-detail.html">Surabaya</a></td>
+                <td><a href="penjahit-detail.html">Seragam</a></td>
+                <td><a href="penjahit-detail.html">2 proyek</a></td>
+                <td><a href="penjahit-detail.html">4.8</a></td>
+                <td>
+                    <a href="penjahit-detail.html">
+                        <span class="badge available">Available</span>
+                    </a>
+                </td>
+            </tr>
+
+            <tr class="clickable-row">
+                <td>Budi Santoso</td>
+                <td>Gresik</td>
+                <td>Jaket</td>
+                <td>5 proyek</td>
+                <td>4.2</td>
+                <td><span class="badge available">Available</span></td>
+            </tr>
+
+            <tr class="clickable-row">
+                <td>Andi Pratama</td>
+                <td>Sidoarjo</td>
+                <td>Kemeja</td>
+                <td>3 proyek</td>
+                <td>4.5</td>
+                <td><span class="badge available">Available</span></td>
+            </tr>
+
+            <tr class="clickable-row">
+                <td>Rina Lestari</td>
+                <td>Malang</td>
+                <td>Kebaya</td>
+                <td>4 proyek</td>
+                <td>4.7</td>
+                <td><span class="badge busy">Busy</span></td>
+            </tr>
+
+            <tr class="clickable-row">
+                <td>Dewi Anggraini</td>
+                <td>Surabaya</td>
+                <td>Dress</td>
+                <td>2 proyek</td>
+                <td>4.9</td>
+                <td><span class="badge available">Available</span></td>
+            </tr>
+
+            <tr class="clickable-row">
+                <td>Agus Setiawan</td>
+                <td>Surabaya</td>
+                <td>Celana</td>
+                <td>2 proyek</td>
+                <td>4.1</td>
+                <td><span class="badge available">Available</span></td>
+            </tr>
+
+            <tr class="clickable-row">
+                <td>Lina Wulandari</td>
+                <td>Surabaya</td>
+                <td>Seragam</td>
+                <td>3 proyek</td>
+                <td>4.6</td>
+                <td><span class="badge available">Available</span></td>
+            </tr>
+
+            <tr class="clickable-row">
+                <td>Fajar Nugroho</td>
+                <td>Gresik</td>
+                <td>Jas</td>
+                <td>5 proyek</td>
+                <td>4.3</td>
+                <td><span class="badge busy">Busy</span></td>
+            </tr>
+
+            <tr class="clickable-row">
+                <td>Sari Puspita</td>
+                <td>Banyuwangi</td>
+                <td>Blus</td>
+                <td>2 proyek</td>
+                <td>4.8</td>
+                <td><span class="badge available">Available</span></td>
+            </tr>
+
+            <tr class="clickable-row">
+                <td>Hendra Wijaya</td>
+                <td>Gresik</td>
+                <td>Jaket</td>
+                <td>7 proyek</td>
+                <td>4.0</td>
+                <td><span class="badge busy">Busy</span></td>
+            </tr>
+
+            <tr class="clickable-row">
+                <td>Maya Kusuma</td>
+                <td>Surabaya</td>
+                <td>Rok</td>
+                <td>1 proyek</td>
+                <td>4.9</td>
+                <td><span class="badge available">Available</span></td>
+            </tr>
+
+            <tr class="clickable-row">
+                <td>Rizky Maulana</td>
+                <td>Tuban</td>
+                <td>Kaos</td>
+                <td>4 proyek</td>
+                <td>4.4</td>
+                <td><span class="badge busy">Busy</span></td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+    </section>
+  </main>
+
+</div>
+
+
+</body>
+</html>
