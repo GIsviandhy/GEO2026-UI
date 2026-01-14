@@ -333,13 +333,13 @@
         <i class="fa-solid fa-chart-pie"></i>Dashboard
       </a>
       <a href="order.html" class="nav-item">
-        <i class="fa-solid fa-clipboard-list"></i>Orders
+        <i class="fa-solid fa-clipboard-list"></i>Order
       </a>
       <a href="gudang.html" class="nav-item active">
-        <i class="fa-solid fa-warehouse"></i>Gudang
+        <i class="fa-solid fa-warehouse"></i>Inventory
       </a>
       <a href="pekerja.html" class="nav-item">
-        <i class="fa-solid fa-users"></i>Manajemen Pekerja
+        <i class="fa-solid fa-users"></i>Tailor Management
       </a>
     </nav>
 
@@ -410,10 +410,12 @@
             </p>
         </div>
 
-        <button class="btn small">
-            <i class="fa-solid fa-bell"></i>
-            Kirim Reminder
+        <button onclick="sendReminder('6281233362006',
+            'Halo Bu Siti, ini pengingat untuk proyek Seragam Pramuka SMA. Mohon dicek progresnya ya. Terima kasih 🙏')" class="btn small">
+          <i class="fa-solid fa-bell"></i>
+          Kirim Reminder
         </button>
+
         </div>
     </li>
 
@@ -516,5 +518,13 @@
 
 </div>
 
+<script>
+  function sendReminder(phone, message) {
+    const encodedMessage = encodeURIComponent(message);
+    const url = `https://wa.me/${phone}?text=${encodedMessage}`;
+    window.open(url, "_blank");
+  }
+
+</script>
 </body>
 </html>

@@ -297,6 +297,70 @@
       color: rgba(110,231,183,0.9);
     }
 
+.estimation {
+    background: linear-gradient(180deg, #0f172a, #020617);
+    border: 1px solid #1e293b;
+}
+
+.estimation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.estimation-header h5 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.estimation-tag {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    font-weight: 500;
+}
+
+.estimation-values {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.estimation-item {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.estimation-item .label {
+    flex: 1;
+    color: #94a3b8;
+}
+
+.estimation-item .value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e5e7eb;
+}
+
+.estimation-item .unit {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.estimation-item.highlight .value {
+    color: #22c55e;
+}
+
+.divider {
+    height: 1px;
+    background: #1e293b;
+    margin: 12px 0;
+}
 
   </style>
 </head>
@@ -314,13 +378,13 @@
         <i class="fa-solid fa-chart-pie"></i>Dashboard
       </a>
       <a href="order.html" class="nav-item active">
-        <i class="fa-solid fa-clipboard-list"></i>Orders
+        <i class="fa-solid fa-clipboard-list"></i>Order
       </a>
       <a href="gudang.html" class="nav-item">
-        <i class="fa-solid fa-warehouse"></i>Gudang
+        <i class="fa-solid fa-warehouse"></i>Inventory
       </a>
       <a href="pekerja.html" class="nav-item">
-        <i class="fa-solid fa-users"></i>Manajemen Pekerja
+        <i class="fa-solid fa-users"></i>Tailor Management
       </a>
     </nav>
 
@@ -432,14 +496,30 @@
 
   <!-- ESTIMATION -->
   <div class="card estimation" id="estimationResult">
-    <h5 class="mb-3">Estimasi Biaya</h5>
+      <div class="estimation-header">
+          <h5>Estimasi Biaya</h5>
+          <span class="estimation-tag">Hasil Perhitungan</span>
+      </div>
 
-    <p><strong>HPP:</strong> Rp 25.000 / pcs</p>
-    <p><strong>Selling Price:</strong> Rp 32.000 / pcs</p>
+      <div class="estimation-values">
+          <div class="estimation-item">
+              <span class="label">HPP</span>
+              <span class="value">Rp 25.000</span>
+              <span class="unit">/ pcs</span>
+          </div>
 
-    <button class="btn btn-primary mt-3" id="goAssign">
-      Lanjut ke Assign Tailor
-    </button>
+          <div class="divider"></div>
+
+          <div class="estimation-item highlight">
+              <span class="label">Selling Price</span>
+              <span class="value">Rp 32.000</span>
+              <span class="unit">/ pcs</span>
+          </div>
+      </div>
+
+      <button class="btn btn-primary mt-3" id="goAssign">
+          Lanjut ke Assign Tailor
+      </button>
   </div>
 
   <!-- =========================

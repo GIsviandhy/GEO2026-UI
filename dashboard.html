@@ -11,6 +11,9 @@
   <!-- ICONS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
+  <!-- CHART JS -->
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     /* ======================================================
        ROOT & RESET
@@ -382,13 +385,13 @@
         <i class="fa-solid fa-chart-pie"></i>Dashboard
       </a>
       <a href="order.html" class="nav-item">
-        <i class="fa-solid fa-clipboard-list"></i>Orders
+        <i class="fa-solid fa-clipboard-list"></i>Order
       </a>
       <a href="gudang.html" class="nav-item">
-        <i class="fa-solid fa-warehouse"></i>Gudang
+        <i class="fa-solid fa-warehouse"></i>Inventory
       </a>
       <a href="pekerja.html" class="nav-item">
-        <i class="fa-solid fa-users"></i>Manajemen Pekerja
+        <i class="fa-solid fa-users"></i>Tailor Management
       </a>
     </nav>
 
@@ -501,14 +504,156 @@
             <div class="progress"><span style="width:40%"></span></div>
           </div>
         </div>
+      </div>
 
+      <!-- ANALYTICS -->
+      <div class="grid grid-2" style="margin-top:28px;">
+
+        <!-- WORK PROGRESS -->
+        <div class="card">
+          <h3>Work Progress</h3>
+          <p class="muted">Jumlah pekerjaan aktif per hari</p>
+
+          <div style="margin-top:16px;">
+            <canvas id="workProgressChart" height="200"></canvas>
+          </div>
+        </div>
+
+        <!-- TAILOR ASSIGNMENTS -->
+        <div class="card">
+          <h3>Tailor Assignments</h3>
+          <p class="muted">Status penerimaan pekerjaan</p>
+
+          <div style="margin-top:16px; max-width:360px; margin-inline:auto;">
+            <canvas id="tailorAssignmentChart"></canvas>
+          </div>
+        </div>
+
+        <!-- SALARY DISTRIBUTION -->
+        <div class="card" style="grid-column: span 2;">
+          <h3>Salary Distribution</h3>
+          <p class="muted">Distribusi gaji penjahit (Rp)</p>
+
+          <div style="margin-top:16px;">
+            <canvas id="salaryChart" height="120"></canvas>
+          </div>
+        </div>
 
       </div>
+
       </section>
 
   </main>
 
 </div>
+
+<script>
+/* ===============================
+   WORK PROGRESS (LINE)
+================================ */
+new Chart(document.getElementById('workProgressChart'), {
+  type: 'line',
+  data: {
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    datasets: [{
+      label: 'Active Jobs',
+      data: [12, 18, 15, 22, 30, 28, 35],
+      borderColor: '#6ee7b7',
+      backgroundColor: 'rgba(110,231,183,0.15)',
+      tension: 0.4,
+      fill: true,
+      pointRadius: 4
+    }]
+  },
+  options: {
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      x: { ticks: { color: '#b5d6c8' }, grid: { display:false } },
+      y: { ticks: { color: '#b5d6c8' }, grid: { color:'rgba(255,255,255,0.05)' } }
+    }
+  }
+});
+
+/* ===============================
+   TAILOR ASSIGNMENT (DONUT)
+================================ */
+const taCtx = document.getElementById('tailorAssignmentChart').getContext('2d');
+
+/* Subtle radial gradients for depth */
+const acceptedGradient = taCtx.createRadialGradient(150, 150, 40, 150, 150, 150);
+acceptedGradient.addColorStop(0, '#a7f3d0'); // bright center
+acceptedGradient.addColorStop(1, '#16a34a'); // deeper edge
+
+const declinedGradient = taCtx.createRadialGradient(150, 150, 40, 150, 150, 150);
+declinedGradient.addColorStop(0, '#fecaca');
+declinedGradient.addColorStop(1, '#b91c1c');
+
+new Chart(taCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Accepted', 'Declined'],
+    datasets: [{
+      data: [78, 22],
+      backgroundColor: [acceptedGradient, declinedGradient],
+      borderWidth: 0,
+      hoverOffset: 8
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: {
+          color: '#b5d6c8',
+          boxWidth: 12
+        }
+      }
+    }
+  }
+});
+
+
+/* ===============================
+   SALARY DISTRIBUTION (BAR)
+================================ */
+const salaryCtx = document.getElementById('salaryChart').getContext('2d');
+
+/* Emerald / jade vertical gradient */
+const salaryGradient = salaryCtx.createLinearGradient(0, 0, 0, 220);
+salaryGradient.addColorStop(0, '#6ee7b7');  // mint highlight
+salaryGradient.addColorStop(0.15, '#00cc77'); // emerald
+salaryGradient.addColorStop(1, '#00854d');  // deep green base
+
+new Chart(salaryCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Tailor A', 'Tailor B', 'Tailor C', 'Tailor D', 'Tailor E'],
+    datasets: [{
+      label: 'Salary (Rp)',
+      data: [2500000, 1900000, 3200000, 2100000, 2700000],
+      backgroundColor: salaryGradient,
+      borderRadius: 10
+    }]
+  },
+  options: {
+    plugins: {
+      legend: { display:false },
+      tooltip: {
+        callbacks: {
+          label: ctx => `Rp ${ctx.raw.toLocaleString()}`
+        }
+      }
+    },
+    scales: {
+      x: { ticks: { color:'#b5d6c8' }, grid:{ display:false } },
+      y: { ticks: { color:'#b5d6c8' }, grid:{ color:'rgba(255,255,255,0.05)' } }
+    }
+  }
+});
+
+</script>
 
 
 </body>
